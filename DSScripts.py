@@ -8,6 +8,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import math
+import seaborn as sns
 
 ###############################################################################
 # Plots variable importances for a RF model from Scikit, modified from Vidhya #
@@ -53,7 +54,10 @@ def print_scatters(df_in, cols, against):
         ind = cols.index(col)
         i = math.floor(ind/2)
         j = 0 if ind % 2 == 0 else 1
-        axarr[i, j].scatter(df_in[col], df_in[against])
+        if col != against:
+            sns.regplot(data = df_in, x=col, y=against, fit_reg=False, ax=axarr[i,j])
+        else:
+            sns.distplot(a = df_in[col], ax=axarr[i,j])
         axarr[i, j].set_title(col)
     f.text(-0.01, 0.5, against, va='center', rotation='vertical', fontsize = 12)
     plt.tight_layout()
